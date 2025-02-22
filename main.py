@@ -33,6 +33,7 @@ def input_error(func):
             return "Enter user name."
     return inner
 
+@input_error
 def parse_input(user_input):
     cmd, *args = user_input.split()
     cmd = cmd.strip().lower()
@@ -40,8 +41,6 @@ def parse_input(user_input):
 
 @input_error
 def add_contact(args):
-    if len(args) !=2:
-        return "Error! Enter name and phone number."
     name, phone = args
     contacts[name] = phone
     save_contacts()
@@ -66,22 +65,14 @@ def read_contacts():
 
 @input_error
 def change_contact(args):
-    if len(args) !=2:
-        raise ValueError
     name, phone = args
-    if name not in contacts:
-        raise KeyError
     contacts[name] = phone
     save_contacts()
     return f"Contact {name} update"
 
 @input_error
 def show_phone(args):
-    if len(args) !=1:
-        raise IndexError
     name = args[0]
-    if name not in contacts:
-        raise KeyError
     return contacts[name]
 
 @input_error
