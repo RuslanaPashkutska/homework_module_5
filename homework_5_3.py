@@ -33,7 +33,8 @@ def filter_logs_by_level(logs: list, level: str) -> list:
 def count_logs_by_level(logs: list) -> dict:
     counts = defaultdict(int)
     for log in logs:
-        counts[log["level"]] +=1
+        if log:
+            counts[log["level"]] +=1
     return dict(counts)
 
 def display_log_counts(counts: dict):
@@ -42,13 +43,20 @@ def display_log_counts(counts: dict):
     for level in sorted(counts.keys()):
         print(f"{level:<10} | {counts[level]:<9}")
 
-def main():
-    # if len(sys.argv) < 2:
-    #    print("Usage: python script.py <logfile_path> [log_level]")
-    #   sys.exit(1)
+def display_filtered_logs(logs: list, level: str):
+    print(f"\nLog details for the level '{level}':")
+    if logs:
+        for log in logs:
+            print(f"{log['date']} {log['time']} - {log['message']}")
+    else:
+        print(f"Log level '{level}' no found.")
 
-    file_path = "/Users/ruslana/Desktop/homework_module_5/logfile.log"
-    print(f"Trying to open: {file_path}")
+def main():
+    if len(sys.argv) < 2:
+        print("Usage: python script.py <logfile_path> [log_level]")
+        sys.exit(1)
+
+    file_path = sys.argv[1]
     logs = load_logs(file_path)
 
     counts = count_logs_by_level(logs)
