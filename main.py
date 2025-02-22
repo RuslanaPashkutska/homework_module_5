@@ -37,7 +37,7 @@ def input_error(func):
 def parse_input(user_input):
     cmd, *args = user_input.split()
     cmd = cmd.strip().lower()
-    return cmd, *args
+    return cmd, args
 
 @input_error
 def add_contact(args):
@@ -52,7 +52,6 @@ def save_contacts():
             file.write(f'{name}: {phone}\n')
 
 def read_contacts():
-    global contacts
     contacts = {}
     try:
         with open(contacts_file, 'r') as file:
@@ -75,8 +74,7 @@ def show_phone(args):
     name = args[0]
     return contacts[name]
 
-@input_error
-def show_all():
+def show_all(contacts):
     if not contacts:
         return 'Contact list is empty.'
     return "\n".join(f'{name}: {phone}' for name, phone in contacts.items())
